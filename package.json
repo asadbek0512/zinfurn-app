@@ -1,0 +1,32 @@
+{
+  "name": "zinfurn-app",
+  "version": "1.0.0",
+  "description": "Zinfurn mobile app (Capacitor wrapper around zinfurn.uz)",
+  "main": "index.js",
+  "scripts": {
+    "assets": "node scripts/gen-assets.mjs && npx @capacitor/assets generate --iconBackgroundColor #ffffff --iconBackgroundColorDark #ffffff --splashBackgroundColor #ffffff --splashBackgroundColorDark #ffffff",
+    "sync": "npx cap sync",
+    "android:debug": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew bundleRelease",
+    "android:open": "npx cap open android",
+    "ios:open": "npx cap open ios"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/browser": "^8.0.4",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.2",
+    "sharp": "^0.35.4",
+    "typescript": "^7.0.2"
+  }
+}
