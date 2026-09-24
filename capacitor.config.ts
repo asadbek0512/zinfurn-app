@@ -1,6 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const SITE_URL = 'https://zinfurn.uz';
+const APP_UA_TAG = 'ZinfurnApp/1.0';
 
 const config: CapacitorConfig = {
 	appId: 'uz.zinfurn.app',
@@ -15,6 +16,11 @@ const config: CapacitorConfig = {
 	android: {
 		allowMixedContent: false,
 		webContentsDebuggingEnabled: false,
+		// Sayt app ichida ochilganini shu belgi bilan biladi (pastdagi navbar, yon menyu yo'q)
+		appendUserAgent: APP_UA_TAG,
+	},
+	ios: {
+		appendUserAgent: APP_UA_TAG,
 	},
 	plugins: {
 		SplashScreen: {
