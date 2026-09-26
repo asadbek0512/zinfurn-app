@@ -1,6 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
-const SITE_URL = 'https://zinfurn.uz';
+// Dev: CAP_DEV_URL=http://localhost:3006 bilan telefonda local next dev (adb reverse)
+const SITE_URL = process.env.CAP_DEV_URL || 'https://zinfurn.uz';
+const IS_DEV_URL = SITE_URL.startsWith('http://');
 const APP_UA_TAG = 'ZinfurnApp/1.0';
 
 const config: CapacitorConfig = {
@@ -9,13 +11,15 @@ const config: CapacitorConfig = {
 	webDir: 'www',
 	server: {
 		url: SITE_URL,
-		cleartext: false,
+		cleartext: IS_DEV_URL,
 		androidScheme: 'https',
-		allowNavigation: ['zinfurn.uz', '*.zinfurn.uz', 'accounts.google.com', '*.google.com', 'oauth.telegram.org', '*.telegram.org'],
+		// Internet yo'q bo'lsa WebView xatosi o'rniga www/error.html ko'rsatiladi
+		errorPath: 'error.html',
+		allowNavigation: [...(IS_DEV_URL ? ['localhost'] : []), 'zinfurn.uz', '*.zinfurn.uz', 'accounts.google.com', '*.google.com', 'oauth.telegram.org', '*.telegram.org'],
 	},
 	android: {
-		allowMixedContent: false,
-		webContentsDebuggingEnabled: false,
+		allowMixedContent: IS_DEV_URL,
+		webContentsDebuggingEnabled: IS_DEV_URL || process.env.CAP_WEBVIEW_DEBUG === '1',
 		// Sayt app ichida ochilganini shu belgi bilan biladi (pastdagi navbar, yon menyu yo'q)
 		appendUserAgent: APP_UA_TAG,
 	},

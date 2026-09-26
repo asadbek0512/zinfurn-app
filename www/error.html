@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zinfurn</title>
+<style>
+	:root { --bg: #ffffff; --text: #1e1b17; --muted: #6b665f; --brand: #d9642b; }
+	@media (prefers-color-scheme: dark) { :root { --bg: #1e1b17; --text: #f3efe9; --muted: #a8a197; } }
+	* { box-sizing: border-box; }
+	body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--bg); color: var(--text); font-family: -apple-system, Roboto, sans-serif; text-align: center; }
+	.icon { width: 72px; height: 72px; margin: 0 auto 20px; color: var(--brand); }
+	h1 { font-size: 20px; margin: 0 0 8px; }
+	p { font-size: 14px; color: var(--muted); margin: 0 0 24px; line-height: 1.5; }
+	button { border: 0; border-radius: 12px; padding: 14px 32px; background: var(--brand); color: #fff; font-size: 16px; font-weight: 600; }
+</style>
+</head>
+<body>
+	<div>
+		<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/><path d="M3 3l18 18"/></svg>
+		<h1 id="title">Internet aloqasi yo'q</h1>
+		<p id="text">Internetga ulanishni tekshirib, qayta urinib ko'ring.</p>
+		<button id="retry">Qayta urinish</button>
+	</div>
+	<script>
+		var SITE_URL = 'https://zinfurn.uz';
+		var TEXTS = {
+			en: ['No internet connection', 'Check your connection and try again.', 'Try again'],
+			ru: ['Нет подключения к интернету', 'Проверьте подключение и попробуйте снова.', 'Повторить'],
+			ko: ['인터넷 연결 없음', '연결을 확인한 후 다시 시도하세요.', '다시 시도'],
+			ar: ['لا يوجد اتصال بالإنترنت', 'تحقق من الاتصال وحاول مرة أخرى.', 'إعادة المحاولة']
+		};
+		var t = TEXTS[(navigator.language || '').slice(0, 2)];
+		if (t) {
+			document.getElementById('title').textContent = t[0];
+			document.getElementById('text').textContent = t[1];
+			document.getElementById('retry').textContent = t[2];
+		}
+		function retry() { location.href = SITE_URL; }
+		document.getElementById('retry').onclick = retry;
+		window.addEventListener('online', retry);
+	</script>
+</body>
+</html>
