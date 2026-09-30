@@ -28,8 +28,10 @@ const config: CapacitorConfig = {
 	},
 	plugins: {
 		SplashScreen: {
-			launchShowDuration: 1500,
+			// Sayt mobil ko'rinishini chizgach o'zi yopadi (AppSplashGate); bu faqat yuqori chegara
+			launchShowDuration: 4000,
 			launchAutoHide: true,
+			launchFadeOutDuration: 200,
 			backgroundColor: '#ffffff',
 			androidSplashResourceName: 'splash',
 			androidScaleType: 'CENTER_CROP',
