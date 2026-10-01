@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2BF60F34457BC14F3B5965B5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58C8E6C3CCF66E05D589816F /* SwiftUI.framework */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		4D22ABE92AF431CB00220026 /* CapApp-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 4D22ABE82AF431CB00220026 /* CapApp-SPM */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
@@ -15,10 +16,40 @@
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
+		699027A3FC3CEB89B4E6ED43 /* ZinfurnWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C9AC09EF90A1C60B4F0FA239 /* ZinfurnWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6A58D7514084323684C0E0EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2535725E359CDAE09C8EDF0F /* Foundation.framework */; };
+		8AF38AF8D6C68C3DAA693BB3 /* ZinfurnWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D180D76CF6A7D6F08F65A4D /* ZinfurnWidget.swift */; };
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
+		B1BADC9CF54A343A757A4191 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6B71A1AF2F6A618985E658 /* WidgetKit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		AB20171B68F1BE679FC53024 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 504EC2FC1FED79650016851F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E139B29BFAA7F968F19543D5;
+			remoteInfo = ZinfurnWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		08959D3C46D75795DB17C19B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				699027A3FC3CEB89B4E6ED43 /* ZinfurnWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0D180D76CF6A7D6F08F65A4D /* ZinfurnWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ZinfurnWidget.swift; sourceTree = "<group>"; };
+		2535725E359CDAE09C8EDF0F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -28,8 +59,12 @@
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		58C8E6C3CCF66E05D589816F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		C9AC09EF90A1C60B4F0FA239 /* ZinfurnWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ZinfurnWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE6B71A1AF2F6A618985E658 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/WidgetKit.framework; sourceTree = DEVELOPER_DIR; };
+		F6C5C58E691B71A93976A8E4 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,15 +76,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8ED930B13B4163CF899BD6AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A58D7514084323684C0E0EB /* Foundation.framework in Frameworks */,
+				B1BADC9CF54A343A757A4191 /* WidgetKit.framework in Frameworks */,
+				2BF60F34457BC14F3B5965B5 /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0844B722EDD5539C1BECEACC /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				2535725E359CDAE09C8EDF0F /* Foundation.framework */,
+				CE6B71A1AF2F6A618985E658 /* WidgetKit.framework */,
+				58C8E6C3CCF66E05D589816F /* SwiftUI.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		13F2625B9E54F5DA13E62AEE /* ZinfurnWidget */ = {
+			isa = PBXGroup;
+			children = (
+				0D180D76CF6A7D6F08F65A4D /* ZinfurnWidget.swift */,
+				F6C5C58E691B71A93976A8E4 /* Info.plist */,
+			);
+			name = ZinfurnWidget;
+			path = ZinfurnWidget;
+			sourceTree = "<group>";
+		};
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
 				958DCC722DB07C7200EA8C5F /* debug.xcconfig */,
 				504EC3061FED79650016851F /* App */,
 				504EC3051FED79650016851F /* Products */,
+				59D182C393C6F0B61D8F7093 /* Frameworks */,
+				13F2625B9E54F5DA13E62AEE /* ZinfurnWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				504EC3041FED79650016851F /* App.app */,
+				C9AC09EF90A1C60B4F0FA239 /* ZinfurnWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -77,6 +145,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		59D182C393C6F0B61D8F7093 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0844B722EDD5539C1BECEACC /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -87,10 +163,12 @@
 				504EC3001FED79650016851F /* Sources */,
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
+				08959D3C46D75795DB17C19B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B2802A65AAB1788135611064 /* PBXTargetDependency */,
 			);
 			name = App;
 			packageProductDependencies = (
@@ -99,6 +177,23 @@
 			productName = App;
 			productReference = 504EC3041FED79650016851F /* App.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E139B29BFAA7F968F19543D5 /* ZinfurnWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 82FC257FC751FC92C8EB4409 /* Build configuration list for PBXNativeTarget "ZinfurnWidget" */;
+			buildPhases = (
+				96D0AA370354BAE5A21FDCC2 /* Sources */,
+				8ED930B13B4163CF899BD6AF /* Frameworks */,
+				FA1C65D5CDEE7DCE0DC9CDED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZinfurnWidget;
+			productName = ZinfurnWidget;
+			productReference = C9AC09EF90A1C60B4F0FA239 /* ZinfurnWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -133,6 +228,7 @@
 			projectRoot = "";
 			targets = (
 				504EC3031FED79650016851F /* App */,
+				E139B29BFAA7F968F19543D5 /* ZinfurnWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -151,6 +247,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FA1C65D5CDEE7DCE0DC9CDED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -163,7 +266,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		96D0AA370354BAE5A21FDCC2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8AF38AF8D6C68C3DAA693BB3 /* ZinfurnWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B2802A65AAB1788135611064 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZinfurnWidget;
+			target = E139B29BFAA7F968F19543D5 /* ZinfurnWidget */;
+			targetProxy = AB20171B68F1BE679FC53024 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		504EC30B1FED79650016851F /* Main.storyboard */ = {
@@ -185,6 +305,31 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		38894BF3DE6DD70C69BD4608 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6QG54PDD7Z;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ZinfurnWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = uz.zinfurn.app.ZinfurnWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		504EC3141FED79650016851F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 958DCC722DB07C7200EA8C5F /* debug.xcconfig */;
@@ -300,8 +445,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6QG54PDD7Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6QG54PDD7Z;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -323,8 +468,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6QG54PDD7Z;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6QG54PDD7Z;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -337,6 +482,32 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C0F2A912A412F9038C9A3C4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6QG54PDD7Z;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ZinfurnWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = uz.zinfurn.app.ZinfurnWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -357,6 +528,15 @@
 			buildConfigurations = (
 				504EC3171FED79650016851F /* Debug */,
 				504EC3181FED79650016851F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		82FC257FC751FC92C8EB4409 /* Build configuration list for PBXNativeTarget "ZinfurnWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0F2A912A412F9038C9A3C4E /* Release */,
+				38894BF3DE6DD70C69BD4608 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
