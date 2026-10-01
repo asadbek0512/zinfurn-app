@@ -25,6 +25,9 @@ const config: CapacitorConfig = {
 	},
 	ios: {
 		appendUserAgent: APP_UA_TAG,
+		// Service worker (offline kesh) WKWebView'da faqat App-Bound Domains bilan ishlaydi —
+		// ro'yxat Info.plist WKAppBoundDomains da (max 10). Boshqa domenlar Safari'da ochiladi
+		limitsNavigationsToAppBoundDomains: true,
 	},
 	plugins: {
 		SplashScreen: {

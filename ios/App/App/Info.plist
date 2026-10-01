@@ -20,6 +20,14 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>WKAppBoundDomains</key>
+	<array>
+		<string>zinfurn.uz</string>
+		<string>www.zinfurn.uz</string>
+		<string>api.zinfurn.uz</string>
+		<string>accounts.google.com</string>
+		<string>oauth.telegram.org</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
