@@ -28,8 +28,9 @@ const config: CapacitorConfig = {
 	},
 	plugins: {
 		SplashScreen: {
-			// Sayt mobil ko'rinishini chizgach o'zi yopadi (AppSplashGate); bu faqat yuqori chegara
-			launchShowDuration: 4000,
+			// Sayt yuklanguncha turadi; saytning boot loader'i (web loader nusxasi) chizilgan zahoti
+			// _document ichidagi script yopadi. Bu faqat yuqori chegara (tarmoq yo'q bo'lsa)
+			launchShowDuration: 10000,
 			launchAutoHide: true,
 			launchFadeOutDuration: 200,
 			backgroundColor: '#ffffff',
