@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -44,6 +46,7 @@ public class ProductWidget extends AppWidgetProvider {
         "{getProperties(input:{page:1,limit:" + PRODUCT_LIMIT + ",sort:\"createdAt\",direction:DESC,search:{}})"
             + "{list{_id propertyTitle propertyPrice propertyIsOnSale propertySalePrice propertySaleStartsAt propertySaleExpiresAt propertyImages}}}";
 
+    private static final String RATES_URL = "https://open.er-api.com/v6/latest/USD";
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
     @Override
@@ -67,12 +70,14 @@ public class ProductWidget extends AppWidgetProvider {
             JSONObject product = pickProduct(fetchProducts());
             if (product != null) {
                 boolean sale = isSaleActive(product);
+                String currency = currentCurrency();
+                double rate = fetchRate(currency);
                 double price = product.getDouble("propertyPrice");
                 views.setTextViewText(R.id.widget_badge, context.getString(sale ? R.string.widget_sale : R.string.widget_new));
                 views.setTextViewText(R.id.widget_title, product.getString("propertyTitle"));
-                views.setTextViewText(R.id.widget_price, formatPrice(sale ? product.getDouble("propertySalePrice") : price));
+                views.setTextViewText(R.id.widget_price, formatPrice(sale ? product.getDouble("propertySalePrice") : price, currency, rate));
                 views.setTextColor(R.id.widget_price, sale ? SALE_PRICE_COLOR : PRICE_COLOR);
-                views.setTextViewText(R.id.widget_old_price, sale ? formatPrice(price) : "");
+                views.setTextViewText(R.id.widget_old_price, sale ? formatPrice(price, currency, rate) : "");
                 views.setInt(R.id.widget_old_price, "setPaintFlags", Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 
                 JSONArray images = product.optJSONArray("propertyImages");
@@ -169,7 +174,66 @@ public class ProductWidget extends AppWidgetProvider {
         return buf.toByteArray();
     }
 
-    private static String formatPrice(double value) {
-        return "$" + Math.round(value);
+    // Narx saytdagidek (zinfurn-next CurrencyContext): valyuta telefon mintaqasi/tilidan
+    private static String currentCurrency() {
+        Locale locale = Locale.getDefault();
+        switch (locale.getCountry()) {
+            case "UZ": return "UZS";
+            case "KR": return "KRW";
+            case "RU": return "RUB";
+            case "AE": return "AED";
+        }
+        switch (locale.getLanguage()) {
+            case "uz": return "UZS";
+            case "ko": return "KRW";
+            case "ru": return "RUB";
+            case "ar": return "AED";
+            default: return "USD";
+        }
+    }
+
+    /** Kurs olinmasa saytdagi DEFAULT_RATES */
+    private static double fallbackRate(String currency) {
+        switch (currency) {
+            case "UZS": return 12700;
+            case "KRW": return 1350;
+            case "RUB": return 90;
+            case "AED": return 3.67;
+            default: return 1;
+        }
+    }
+
+    private static double fetchRate(String currency) {
+        if (currency.equals("USD")) return 1;
+        try {
+            HttpURLConnection conn = (HttpURLConnection) new URL(RATES_URL).openConnection();
+            conn.setConnectTimeout(TIMEOUT_MS);
+            conn.setReadTimeout(TIMEOUT_MS);
+            try (InputStream in = conn.getInputStream()) {
+                JSONObject rates = new JSONObject(new String(readAll(in), StandardCharsets.UTF_8)).getJSONObject("rates");
+                return rates.getDouble(currency);
+            } finally {
+                conn.disconnect();
+            }
+        } catch (Exception e) {
+            return fallbackRate(currency);
+        }
+    }
+
+    private static String formatPrice(double usd, String currency, double rate) {
+        double converted = Math.round(usd * rate);
+        switch (currency) {
+            case "KRW": return "₩" + String.format(Locale.KOREA, "%,.0f", converted);
+            case "RUB": return String.format(new Locale("ru", "RU"), "%,.0f", converted) + " ₽";
+            case "AED": return String.format(Locale.US, "%,.0f", converted) + " د.إ";
+            case "UZS":
+                if (converted >= 1_000_000_000) return String.format(Locale.US, "%.1f mlrd so'm", converted / 1_000_000_000);
+                if (converted >= 1_000_000) return String.format(Locale.US, "%.1f mln so'm", converted / 1_000_000);
+                if (converted >= 1_000) return String.format(Locale.US, "%.0f ming so'm", converted / 1_000);
+                return String.format(Locale.US, "%.0f so'm", converted);
+            default:
+                DecimalFormat usdFormat = new DecimalFormat("#,##0.##", DecimalFormatSymbols.getInstance(Locale.US));
+                return "$" + usdFormat.format(usd);
+        }
     }
 }

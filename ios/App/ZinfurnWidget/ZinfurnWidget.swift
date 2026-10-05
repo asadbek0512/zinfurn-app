@@ -43,12 +43,74 @@ struct Product: Decodable {
     }
 }
 
+// Narx saytdagidek ko'rsatiladi (zinfurn-next CurrencyContext bilan bir xil format):
+// valyuta telefon mintaqasi/tilidan, kurs sayt ishlatadigan API'dan olinadi
+private enum WidgetCurrency {
+    case usd, krw, uzs, rub, aed
+
+    static let ratesURL = URL(string: "https://open.er-api.com/v6/latest/USD")!
+    private static let byRegion: [String: WidgetCurrency] = ["UZ": .uzs, "KR": .krw, "RU": .rub, "AE": .aed]
+    private static let byLanguage: [String: WidgetCurrency] = ["uz": .uzs, "ko": .krw, "ru": .rub, "ar": .aed]
+
+    static var current: WidgetCurrency {
+        if let region = Locale.current.regionCode, let c = byRegion[region] { return c }
+        if let language = Locale.current.languageCode, let c = byLanguage[language] { return c }
+        return .usd
+    }
+
+    var code: String {
+        switch self {
+        case .usd: return "USD"
+        case .krw: return "KRW"
+        case .uzs: return "UZS"
+        case .rub: return "RUB"
+        case .aed: return "AED"
+        }
+    }
+
+    /// Kurs olinmasa saytdagi DEFAULT_RATES
+    var fallbackRate: Double {
+        switch self {
+        case .usd: return 1
+        case .krw: return 1350
+        case .uzs: return 12700
+        case .rub: return 90
+        case .aed: return 3.67
+        }
+    }
+
+    func format(_ usd: Double, rate: Double) -> String {
+        let converted = (usd * rate).rounded()
+        switch self {
+        case .krw: return "₩" + Self.grouped(converted, locale: "ko_KR")
+        case .rub: return Self.grouped(converted, locale: "ru_RU") + " ₽"
+        case .aed: return Self.grouped(converted, locale: "en_US") + " د.إ"
+        case .uzs:
+            if converted >= 1_000_000_000 { return String(format: "%.1f mlrd so'm", converted / 1_000_000_000) }
+            if converted >= 1_000_000 { return String(format: "%.1f mln so'm", converted / 1_000_000) }
+            if converted >= 1_000 { return String(format: "%.0f ming so'm", converted / 1_000) }
+            return String(format: "%.0f so'm", converted)
+        case .usd: return "$" + Self.grouped(usd, locale: "en_US", fractionDigits: 2)
+        }
+    }
+
+    private static func grouped(_ value: Double, locale: String, fractionDigits: Int = 0) -> String {
+        let f = NumberFormatter()
+        f.numberStyle = .decimal
+        f.locale = Locale(identifier: locale)
+        f.maximumFractionDigits = fractionDigits
+        return f.string(from: NSNumber(value: value)) ?? String(Int(value))
+    }
+}
+
+private struct RatesResponse: Decodable { let rates: [String: Double] }
+
 struct ProductEntry: TimelineEntry {
     let date: Date
     let id: String?
     let title: String
-    let price: Double?
-    let oldPrice: Double?
+    let price: String?
+    let oldPrice: String?
     let onSale: Bool
     let image: UIImage?
 
@@ -74,12 +136,15 @@ struct Provider: TimelineProvider {
     private func loadEntry() async -> ProductEntry {
         guard let product = await fetchProduct() else { return .placeholder }
         let sale = product.isSaleActive
+        let currency = WidgetCurrency.current
+        let rate = await fetchRate(currency)
+        let format = { (usd: Double) in currency.format(usd, rate: rate) }
         return ProductEntry(
             date: Date(),
             id: product._id,
             title: product.propertyTitle,
-            price: sale ? product.propertySalePrice : product.propertyPrice,
-            oldPrice: sale ? product.propertyPrice : nil,
+            price: (sale ? product.propertySalePrice : product.propertyPrice).map(format),
+            oldPrice: sale ? format(product.propertyPrice) : nil,
             onSale: sale,
             image: await fetchImage(product.propertyImages.first)
         )
@@ -95,6 +160,15 @@ struct Provider: TimelineProvider {
               let list = (try? JSONDecoder().decode(GraphQLResponse.self, from: data))?.data?.getProperties.list
         else { return nil }
         return list.first(where: { $0.isSaleActive }) ?? list.first
+    }
+
+    private func fetchRate(_ currency: WidgetCurrency) async -> Double {
+        if currency == .usd { return 1 }
+        let request = URLRequest(url: WidgetCurrency.ratesURL, timeoutInterval: Config.requestTimeout)
+        guard let (data, _) = try? await URLSession.shared.data(for: request),
+              let rate = (try? JSONDecoder().decode(RatesResponse.self, from: data))?.rates[currency.code]
+        else { return currency.fallbackRate }
+        return rate
     }
 
     // Widget xotirasi cheklangan — rasm kichraytirib olinadi
@@ -159,17 +233,15 @@ struct ZinfurnWidgetView: View {
                 .lineLimit(family == .systemMedium ? 3 : 1)
             HStack(spacing: 4) {
                 if let price = entry.price {
-                    Text(formatPrice(price)).font(.system(size: 13, weight: .bold))
+                    Text(price).font(.system(size: 13, weight: .bold))
                         .foregroundColor(entry.onSale ? .red : .primary)
                 }
                 if let old = entry.oldPrice {
-                    Text(formatPrice(old)).font(.system(size: 10)).strikethrough().foregroundColor(.secondary)
+                    Text(old).font(.system(size: 10)).strikethrough().foregroundColor(.secondary)
                 }
             }
         }
     }
-
-    private func formatPrice(_ value: Double) -> String { "$\(Int(value))" }
 }
 
 private extension View {
