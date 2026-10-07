@@ -38,9 +38,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>AI Designer uchun xona rasmini olish</string>
+	<string>Zinfurn uses the camera so you can take a photo of your room for AI Room Designer and photo search, or add photos to your posts and profile.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>AI Designer uchun galereyadan rasm tanlash</string>
+	<string>Zinfurn needs access to your photos so you can choose a room picture for AI Room Designer and photo search, or attach images to your posts and profile.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
