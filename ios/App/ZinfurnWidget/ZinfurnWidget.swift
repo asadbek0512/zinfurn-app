@@ -14,6 +14,10 @@ private enum Config {
     static let imageMaxSide: CGFloat = 400
     static let requestTimeout: TimeInterval = 15
     static let brand = Color(red: 0.84, green: 0.37, blue: 0.16)
+    /** App (WidgetBridgePlugin) yozadi — foydalanuvchi sevimlilari */
+    static let appGroup = "group.uz.zinfurn.app"
+    static let favoritesKey = "favorite_ids"
+    static let fields = "{list{_id propertyTitle propertyPrice propertyIsOnSale propertySalePrice propertySaleStartsAt propertySaleExpiresAt propertyImages}}}"
 }
 
 private struct GraphQLResponse: Decodable {
@@ -112,6 +116,7 @@ struct ProductEntry: TimelineEntry {
     let price: String?
     let oldPrice: String?
     let onSale: Bool
+    var favorite = false
     let image: UIImage?
 
     static let placeholder = ProductEntry(date: Date(), id: nil, title: "Zinfurn", price: nil, oldPrice: nil, onSale: false, image: nil)
@@ -134,7 +139,10 @@ struct Provider: TimelineProvider {
     }
 
     private func loadEntry() async -> ProductEntry {
-        guard let product = await fetchProduct() else { return .placeholder }
+        let favoriteIds = UserDefaults(suiteName: Config.appGroup)?.stringArray(forKey: Config.favoritesKey) ?? []
+        let favorite = favoriteIds.isEmpty ? nil : await fetchProduct(ids: favoriteIds)
+        let fallback = favorite == nil ? await fetchProduct(ids: []) : nil
+        guard let product = favorite ?? fallback else { return .placeholder }
         let sale = product.isSaleActive
         let currency = WidgetCurrency.current
         let rate = await fetchRate(currency)
@@ -146,12 +154,18 @@ struct Provider: TimelineProvider {
             price: (sale ? product.propertySalePrice : product.propertyPrice).map(format),
             oldPrice: sale ? format(product.propertyPrice) : nil,
             onSale: sale,
+            favorite: favorite != nil,
             image: await fetchImage(product.propertyImages.first)
         )
     }
 
-    private func fetchProduct() async -> Product? {
-        let query = "{getProperties(input:{page:1,limit:\(Config.productLimit),sort:\"createdAt\",direction:DESC,search:{}}){list{_id propertyTitle propertyPrice propertyIsOnSale propertySalePrice propertySaleStartsAt propertySaleExpiresAt propertyImages}}}"
+    /// ids bo'sh bo'lmasa faqat sevimlilar (idList), aks holda eng yangilari
+    private func fetchProduct(ids: [String]) async -> Product? {
+        let hex = CharacterSet(charactersIn: "0123456789abcdef").inverted
+        let safeIds = ids.map { "\"\($0.components(separatedBy: hex).joined())\"" }
+        let search = ids.isEmpty ? "{}" : "{idList:[\(safeIds.joined(separator: ","))]}"
+        let limit = ids.isEmpty ? Config.productLimit : ids.count
+        let query = "{getProperties(input:{page:1,limit:\(limit),sort:\"createdAt\",direction:DESC,search:\(search)})\(Config.fields)"
         var request = URLRequest(url: Config.graphqlURL, timeoutInterval: Config.requestTimeout)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -225,7 +239,7 @@ struct ZinfurnWidgetView: View {
 
     private var info: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(entry.onSale ? "FLASH SALE" : "NEW IN")
+            Text(entry.onSale ? "FLASH SALE" : entry.favorite ? "YOUR FAVORITE" : "NEW IN")
                 .font(.system(size: 10, weight: .heavy))
                 .foregroundColor(Config.brand)
             Text(entry.title)

@@ -13,8 +13,9 @@ project.targets.each do |target|
     s['CODE_SIGN_STYLE'] = 'Automatic'
     s['MARKETING_VERSION'] = version
     s['CURRENT_PROJECT_VERSION'] = build
-    # Sign in with Apple, Push, Universal Links — faqat asosiy app'da (widget'da kerak emas)
+    # Sign in with Apple, Push, Universal Links, App Group — asosiy app; widget'ga faqat App Group
     s['CODE_SIGN_ENTITLEMENTS'] = 'App/App.entitlements' if target.name == 'App'
+    s['CODE_SIGN_ENTITLEMENTS'] = 'ZinfurnWidget/ZinfurnWidget.entitlements' if target.name == 'ZinfurnWidget'
   end
 end
 project.save

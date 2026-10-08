@@ -3,6 +3,7 @@ package uz.zinfurn.app;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,12 +43,26 @@ public class ProductWidget extends AppWidgetProvider {
     private static final int IMAGE_MAX_SIDE = 400;
     private static final int SALE_PRICE_COLOR = 0xFFE53935;
     private static final int PRICE_COLOR = 0xFF1A1A1A;
-    private static final String QUERY =
-        "{getProperties(input:{page:1,limit:" + PRODUCT_LIMIT + ",sort:\"createdAt\",direction:DESC,search:{}})"
-            + "{list{_id propertyTitle propertyPrice propertyIsOnSale propertySalePrice propertySaleStartsAt propertySaleExpiresAt propertyImages}}}";
+    private static final String QUERY_FIELDS =
+        "{list{_id propertyTitle propertyPrice propertyIsOnSale propertySalePrice propertySaleStartsAt propertySaleExpiresAt propertyImages}}}";
+    /** App (WidgetBridgePlugin) yozadi: foydalanuvchi sevimlilari, vergul bilan */
+    static final String PREFS = "zinfurn_widget";
+    static final String KEY_FAVORITES = "favorite_ids";
 
     private static final String RATES_URL = "https://open.er-api.com/v6/latest/USD";
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+
+    /** Sevimlilar o'zgarganda app chaqiradi — barcha widget'lar darhol yangilanadi */
+    static void refreshAll(Context context) {
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        int[] ids = manager.getAppWidgetIds(new ComponentName(context, ProductWidget.class));
+        if (ids.length == 0) return;
+        final Context app = context.getApplicationContext();
+        EXECUTOR.execute(() -> {
+            RemoteViews views = buildViews(app);
+            for (int id : ids) manager.updateAppWidget(id, views);
+        });
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager manager, int[] ids) {
@@ -67,13 +82,17 @@ public class ProductWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_product);
         String link = SITE_BASE;
         try {
-            JSONObject product = pickProduct(fetchProducts());
+            String[] favorites = readFavorites(context);
+            JSONArray list = favorites.length > 0 ? fetchProducts(favorites) : new JSONArray();
+            boolean favorite = list.length() > 0;
+            if (!favorite) list = fetchProducts(new String[0]);
+            JSONObject product = pickProduct(list);
             if (product != null) {
                 boolean sale = isSaleActive(product);
                 String currency = currentCurrency();
                 double rate = fetchRate(currency);
                 double price = product.getDouble("propertyPrice");
-                views.setTextViewText(R.id.widget_badge, context.getString(sale ? R.string.widget_sale : R.string.widget_new));
+                views.setTextViewText(R.id.widget_badge, context.getString(sale ? R.string.widget_sale : favorite ? R.string.widget_favorite : R.string.widget_new));
                 views.setTextViewText(R.id.widget_title, product.getString("propertyTitle"));
                 views.setTextViewText(R.id.widget_price, formatPrice(sale ? product.getDouble("propertySalePrice") : price, currency, rate));
                 views.setTextColor(R.id.widget_price, sale ? SALE_PRICE_COLOR : PRICE_COLOR);
@@ -96,7 +115,29 @@ public class ProductWidget extends AppWidgetProvider {
         return views;
     }
 
-    private static JSONArray fetchProducts() throws Exception {
+    private static String[] readFavorites(Context context) {
+        String raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_FAVORITES, "");
+        return raw.isEmpty() ? new String[0] : raw.split(",");
+    }
+
+    /** Sevimlilar bo'lsa faqat ular (idList), aks holda eng yangi mahsulotlar */
+    private static String buildQuery(String[] favorites) {
+        StringBuilder search = new StringBuilder("{");
+        if (favorites.length > 0) {
+            search.append("idList:[");
+            for (int i = 0; i < favorites.length; i++) {
+                if (i > 0) search.append(',');
+                search.append('"').append(favorites[i].replaceAll("[^0-9a-f]", "")).append('"');
+            }
+            search.append(']');
+        }
+        search.append('}');
+        int limit = favorites.length > 0 ? favorites.length : PRODUCT_LIMIT;
+        return "{getProperties(input:{page:1,limit:" + limit + ",sort:\"createdAt\",direction:DESC,search:" + search + "})"
+            + QUERY_FIELDS;
+    }
+
+    private static JSONArray fetchProducts(String[] favorites) throws Exception {
         HttpURLConnection conn = (HttpURLConnection) new URL(GRAPHQL_URL).openConnection();
         try {
             conn.setConnectTimeout(TIMEOUT_MS);
@@ -104,7 +145,7 @@ public class ProductWidget extends AppWidgetProvider {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
-            byte[] body = new JSONObject().put("query", QUERY).toString().getBytes(StandardCharsets.UTF_8);
+            byte[] body = new JSONObject().put("query", buildQuery(favorites)).toString().getBytes(StandardCharsets.UTF_8);
             try (OutputStream out = conn.getOutputStream()) {
                 out.write(body);
             }

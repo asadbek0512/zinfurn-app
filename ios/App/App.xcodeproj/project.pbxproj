@@ -18,6 +18,7 @@
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
 		699027A3FC3CEB89B4E6ED43 /* ZinfurnWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C9AC09EF90A1C60B4F0FA239 /* ZinfurnWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6A58D7514084323684C0E0EB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2535725E359CDAE09C8EDF0F /* Foundation.framework */; };
+		868929CED6392096B69D8895 /* WidgetBridgePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B871923B12CFD7D3D10F146 /* WidgetBridgePlugin.swift */; };
 		8AF38AF8D6C68C3DAA693BB3 /* ZinfurnWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D180D76CF6A7D6F08F65A4D /* ZinfurnWidget.swift */; };
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 		B1BADC9CF54A343A757A4191 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6B71A1AF2F6A618985E658 /* WidgetKit.framework */; };
@@ -53,6 +54,7 @@
 		0D180D76CF6A7D6F08F65A4D /* ZinfurnWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ZinfurnWidget.swift; sourceTree = "<group>"; };
 		2535725E359CDAE09C8EDF0F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
+		3B871923B12CFD7D3D10F146 /* WidgetBridgePlugin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetBridgePlugin.swift; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		504EC3071FED79650016851F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		58C8E6C3CCF66E05D589816F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 		6146FA3C020C0CB32800A891 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		8D10BB4FD27D85B8BFBD1E8A /* ZinfurnWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = ZinfurnWidget.entitlements; sourceTree = "<group>"; };
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		C9AC09EF90A1C60B4F0FA239 /* ZinfurnWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ZinfurnWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +111,7 @@
 			children = (
 				0D180D76CF6A7D6F08F65A4D /* ZinfurnWidget.swift */,
 				F6C5C58E691B71A93976A8E4 /* Info.plist */,
+				8D10BB4FD27D85B8BFBD1E8A /* ZinfurnWidget.entitlements */,
 			);
 			name = ZinfurnWidget;
 			path = ZinfurnWidget;
@@ -147,6 +151,7 @@
 				50B271D01FEDC1A000F3C39B /* public */,
 				6146FA3C020C0CB32800A891 /* PrivacyInfo.xcprivacy */,
 				E3A98DCD942DF6D01A295284 /* ArQuickLookPlugin.swift */,
+				3B871923B12CFD7D3D10F146 /* WidgetBridgePlugin.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -271,6 +276,7 @@
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 				C774CFE965D21A957BF25D52 /* ArQuickLookPlugin.swift in Sources */,
+				868929CED6392096B69D8895 /* WidgetBridgePlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

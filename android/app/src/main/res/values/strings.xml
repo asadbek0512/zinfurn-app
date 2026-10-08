@@ -4,6 +4,7 @@
     <string name="widget_description">Flash sale and new furniture</string>
     <string name="widget_sale">FLASH SALE</string>
     <string name="widget_new">NEW IN</string>
+    <string name="widget_favorite">YOUR FAVORITE</string>
     <string name="title_activity_main">Zinfurn</string>
     <string name="package_name">uz.zinfurn.app</string>
     <string name="custom_url_scheme">uz.zinfurn.app</string>

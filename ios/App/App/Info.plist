@@ -39,6 +39,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Zinfurn uses the camera so you can take a photo of your room for AI Room Designer and photo search, or add photos to your posts and profile.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Zinfurn uses Face ID so you can sign in to your account quickly and securely.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Zinfurn needs access to your photos so you can choose a room picture for AI Room Designer and photo search, or attach images to your posts and profile.</string>
 	<key>UIApplicationSceneManifest</key>

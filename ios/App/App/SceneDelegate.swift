@@ -6,6 +6,7 @@ class MainViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         webView?.allowsBackForwardNavigationGestures = true
         bridge?.registerPluginInstance(ArQuickLookPlugin())
+        bridge?.registerPluginInstance(WidgetBridgePlugin())
     }
 }
 
