@@ -14,5 +14,10 @@ ios/DerivedData/
 www/*
 !www/index.html
 !www/error.html
-release/
+# Build fayllar (aab/apk) git'ga tushmaydi, store materiallari tushadi
+release/*
+!release/store-listing.md
+!release/RELEASE-STEPS.md
+!release/screenshots/
+!release/store-assets/
 android/app/google-services.json
